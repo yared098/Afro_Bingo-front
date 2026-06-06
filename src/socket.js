@@ -5,8 +5,8 @@ import { io } from 'socket.io-client';
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 const config = {
-  transports: ['websocket', 'polling'], // 👈 Move websocket to the front
-  // transports: ['polling', 'websocket'], // 👈 Add polling here
+  // transports: ['websocket', 'polling'], // 👈 Move websocket to the front
+  transports: ['polling', 'websocket'], // 👈 Add polling here
   // transports: ['websocket'],
   withCredentials: true,
   reconnection: true,
