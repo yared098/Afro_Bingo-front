@@ -5,7 +5,7 @@ import axios from 'axios';
 import { socket } from '../socket'; 
 
 const AuthContext = createContext();
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 'https://fish-bingo-backend-new.onrender.com';
 
 const api = axios.create({
   baseURL: `${API_URL}/api`,
