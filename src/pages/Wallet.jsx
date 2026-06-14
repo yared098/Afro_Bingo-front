@@ -1,220 +1,3 @@
-  
-
-// import React, { useState, useEffect } from 'react';
-// import { useAuth } from '../context/AuthContext';
-// import { useTheme } from '../context/ThemeContext';
-// import { motion, AnimatePresence } from 'framer-motion';
-
-// const Wallet = () => {
-//   const { api, user, refreshUser } = useAuth();
-//   const { isDark } = useTheme();
-//   const [providers, setProviders] = useState([]);
-//   const [selectedProvider, setSelectedProvider] = useState(null);
-//   const [mode, setMode] = useState('deposit'); 
-//   const [formData, setFormData] = useState({ amount: '', accountNumber: '', ref: '' });
-//   const [loading, setLoading] = useState(false);
-//   const [copied, setCopied] = useState(false);
-
-//   const MIN_RETAINED_BALANCE = 50;
-//   const isBalanceLow = (user?.coins || 0) <= MIN_RETAINED_BALANCE;
-
-//   useEffect(() => {
-//     const fetchProviders = async () => {
-//       try {
-//         const { data } = await api.get('/wallet/providers');
-//         setProviders(data);
-//         if (data.length > 0) setSelectedProvider(data[0]);
-//       } catch (err) { console.error(err); }
-//     };
-//     fetchProviders();
-//   }, [api]);
-
-//   const handleCopy = (text) => {
-//     if (!text) return;
-//     navigator.clipboard.writeText(text).then(() => {
-//       setCopied(true);
-//       setTimeout(() => setCopied(false), 2000);
-//     });
-//   };
-
-//   const validateForm = () => {
-//     const tg = window.Telegram?.WebApp;
-//     if (mode === 'deposit') {
-//       if (formData.ref.length < 10) {
-//         tg?.showAlert("የደረሰኝ ቁጥሩ (Ref ID) አጭር ነው። እባክዎ ከ SMS ላይ በትክክል ገልብጠው ያስገቡ።");
-//         return false;
-//       }
-//     } else {
-//       const phoneRegex = /^(09|07)\d{8}$/;
-//       if (!phoneRegex.test(formData.accountNumber)) {
-//         tg?.showAlert("ትክክለኛ ስልክ ቁጥር ያስገቡ (ለምሳሌ፦ 0912345678)");
-//         return false;
-//       }
-//       if (Number(formData.amount) < 10) {
-//         tg?.showAlert("ቢያንስ 10 ብር ማውጣት ይኖርብዎታል።");
-//         return false;
-//       }
-//     }
-//     return true;
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!validateForm()) return;
-//     const tg = window.Telegram?.WebApp;
-//     setLoading(true);
-//     try {
-//       const endpoint = mode === 'deposit' ? '/wallet/deposit-frontend' : '/wallet/withdraw-fron';
-//       const payload = {
-//         userId: user._id,
-//         amount: mode === 'deposit' ? 0 : Number(formData.amount),
-//         provider: selectedProvider?.name,
-//         accountNumber: formData.accountNumber,
-//         referenceNumber: formData.ref.toUpperCase().trim(),
-//       };
-//       const response = await api.post(endpoint, payload);
-//       if (response.status === 201 || response.status === 200) {
-//         tg?.showAlert("ጥያቄዎ ተልኳል! ሲስተሙ ሲያረጋግጥ ሂሳብዎ ላይ ይጨመራል።");
-//         setFormData({ amount: "", accountNumber: "", ref: "" });
-//         refreshUser();
-//       }
-//     } catch (err) {
-//       tg?.showAlert(err.response?.data?.message || "ስህተት ተፈጥሯል፤ እባክዎ ደግመው ይሞክሩ።");
-//     } finally { setLoading(false); }
-//   };
-
-//   return (
-//     <div className={`min-h-screen font-sans antialiased ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'} px-4 pb-24 pt-6`}>
-      
-//       {/* BALANCE CARD */}
-//       <motion.div 
-//         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-//         className={`relative mb-6 p-6 rounded-3xl shadow-xl overflow-hidden ${isDark ? 'bg-slate-900 border border-white/5' : 'bg-gradient-to-br from-orange-500 to-orange-600 text-white'}`}
-//       >
-//         <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-70">ጠቅላላ ሂሳብ (Balance)</p>
-//         <div className="flex items-baseline gap-2 mt-1">
-//           <h2 className="text-4xl font-black italic">{user?.coins?.toLocaleString()}</h2>
-//           <span className="text-lg font-bold opacity-80">ETB</span>
-//         </div>
-//       </motion.div>
-
-//       {/* MODE SWITCHER */}
-//       <div className={`flex p-1.5 mb-6 rounded-2xl ${isDark ? 'bg-slate-900' : 'bg-slate-200/50'}`}>
-//         {['deposit', 'withdraw'].map((m) => (
-//           <button 
-//             key={m} 
-//             onClick={() => { setMode(m); setFormData({ amount: '', accountNumber: '', ref: '' }); }}
-//             className={`flex-1 py-3 text-[11px] font-black uppercase tracking-wider rounded-xl transition-all
-//               ${mode === m ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-slate-500'}`}
-//           >
-//             {m === 'deposit' ? 'ብር ለማስገባት' : 'ብር ለማውጣት'}
-//           </button>
-//         ))}
-//       </div>
-
-//       {/* PROVIDER SELECTOR (Added back) */}
-//       {mode === 'deposit' && (
-//         <div className="mb-6">
-//           <label className="text-[10px] font-black text-slate-500 uppercase ml-2 mb-2 block tracking-widest">አካውንት ይምረጡ (Select Provider)</label>
-//           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-//             {providers.map((p) => (
-//               <button
-//                 key={p._id}
-//                 onClick={() => setSelectedProvider(p)}
-//                 className={`shrink-0 px-5 py-3 rounded-2xl border-2 transition-all flex flex-col items-start
-//                   ${selectedProvider?._id === p._id 
-//                     ? 'border-orange-500 bg-orange-500/10' 
-//                     : isDark ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white'}`}
-//               >
-//                 <span className="text-[9px] font-black uppercase opacity-60">{p.name}</span>
-//                 <span className="text-sm font-bold">{p.adminDetails}</span>
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-//       )}
-
-//       {/* MAIN FORM AREA */}
-//       <div className={`p-6 rounded-3xl shadow-2xl transition-all duration-300 ${isDark ? 'bg-slate-900 border border-white/5' : 'bg-white'}`}>
-        
-//         {mode === 'deposit' ? (
-//           <div className="space-y-6">
-//             {/* AMHARIC DEPOSIT GUIDE */}
-//             <div className={`p-4 rounded-2xl text-[11px] font-bold leading-relaxed ${isDark ? 'bg-orange-500/5 text-orange-200' : 'bg-orange-50 text-orange-800'}`}>
-//                <p className="mb-2 text-[12px] font-black underline">ብር ለመሙላት እነዚህን ይከተሉ፡</p>
-//                <ol className="list-decimal ml-4 space-y-1">
-//                  <li>ከላይ ካሉት አካውንቶች አንዱን ይምረጡና ቁጥሩን በመንካት ይቅዱ።</li>
-//                  <li>ወደ ቴሌብር መተግበሪያ በመሄድ ብር ይላኩ።</li>
-//                  <li>ሲልኩ ከቴሌብር የሚመጣልዎትን SMS ላይ የደረሰኝ ቁጥሩን (Ref ID) ይቅዱ።</li>
-//                  <li>እዚህ በመመለስ የደረሰኝ ቁጥሩን ያስገቡ።</li>
-//                </ol>
-//             </div>
-
-//             <motion.div 
-//               whileTap={{ scale: 0.98 }}
-//               onClick={() => handleCopy(selectedProvider?.adminDetails)}
-//               className="p-5 rounded-2xl bg-emerald-500/5 border-2 border-dashed border-emerald-500/30 text-center cursor-pointer"
-//             >
-//               <p className="text-[9px] font-black text-emerald-500 uppercase mb-1">{copied ? 'ተቀድቷል ✓' : 'ለመቅዳት ቁጥሩን ይንኩ (Tap to Copy)'}</p>
-//               <p className="text-2xl font-black tracking-tighter text-emerald-600">{selectedProvider?.adminDetails || '...'}</p>
-//             </motion.div>
-
-//             <form onSubmit={handleSubmit} className="space-y-6">
-//               <div>
-//                 <label className="text-[10px] font-black text-orange-500 uppercase mb-1 block">የደረሰኝ ቁጥር (Ref ID)</label>
-//                 <input 
-//                   type="text" required placeholder="ለምሳሌ፦ DCJ616D1GE"
-//                   value={formData.ref} 
-//                   onChange={(e) => setFormData({...formData, ref: e.target.value})}
-//                   className="w-full bg-transparent border-b-2 border-orange-500/30 py-3 text-xl font-black outline-none focus:border-orange-500 uppercase"
-//                 />
-//               </div>
-//               <button disabled={loading} className="w-full py-4 rounded-2xl bg-orange-600 text-white font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-orange-900/20 active:scale-95 disabled:opacity-50">
-//                 {loading ? 'በማረጋገጥ ላይ...' : 'አረጋግጥ (Validate)'}
-//               </button>
-//             </form>
-//           </div>
-//         ) : (
-//           <form onSubmit={handleSubmit} className="space-y-6">
-//             <div>
-//               <label className="text-[10px] font-black text-slate-400 uppercase mb-1 block">የሚወጣው ብር መጠን</label>
-//               <input 
-//                 type="number" required placeholder="ለምሳሌ 100"
-//                 value={formData.amount} 
-//                 onChange={(e) => setFormData({...formData, amount: e.target.value})}
-//                 className="w-full bg-transparent border-b-2 border-slate-700 py-3 text-2xl font-black outline-none focus:border-emerald-500 transition-colors"
-//               />
-//             </div>
-//             <div>
-//               <label className="text-[10px] font-black text-slate-400 uppercase mb-1 block">የቴሌብር ስልክ ቁጥር</label>
-//               <input 
-//                 type="text" required placeholder="09..."
-//                 value={formData.accountNumber} 
-//                 onChange={(e) => setFormData({...formData, accountNumber: e.target.value})}
-//                 className="w-full bg-transparent border-b-2 border-slate-700 py-3 text-xl font-black outline-none focus:border-emerald-500"
-//               />
-//             </div>
-//             <button disabled={loading || isBalanceLow} className="w-full py-4 rounded-2xl bg-emerald-600 text-white font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/20 active:scale-95 disabled:opacity-50">
-//               {loading ? 'በመላክ ላይ...' : 'ብር ማውጫ ጥያቄ ላክ'}
-//             </button>
-//           </form>
-//         )}
-//       </div>
-
-//       <AnimatePresence>
-//         {mode === 'withdraw' && isBalanceLow && (
-//           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-[10px] font-bold">
-//             ⚠️ ብር ለማውጣት ሂሳብዎ ላይ ቢያንስ 50 ብር መኖር አለበት።
-//           </motion.div>
-//         )}
-//       </AnimatePresence>
-
-//       <style dangerouslySetInnerHTML={{ __html: `.scrollbar-hide::-webkit-scrollbar { display: none; }` }} />
-//     </div>
-//   );
-// };
-
-// export default Wallet;   
 
 
 import React, { useState, useEffect } from 'react';
@@ -338,8 +121,8 @@ const Wallet = () => {
         ))}
       </div>
 
-      {/* 3. SIMPLIFIED HORIZONTAL PROVIDER SELECTOR */}
-      {mode === 'deposit' && (
+      3. SIMPLIFIED HORIZONTAL PROVIDER SELECTOR
+      {/* {mode === 'deposit' && (
         <div className="mb-6 animate-fadeIn">
           <label className="text-[10px] font-bold text-slate-400 uppercase ml-1 mb-2.5 block tracking-widest">አካውንት ይምረጡ (Select Provider)</label>
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
@@ -354,6 +137,8 @@ const Wallet = () => {
                       ? 'border-amber-500 bg-amber-500/10 shadow-md shadow-amber-500/5' 
                       : isDark ? 'border-slate-900 bg-slate-900/40 hover:border-slate-800' : 'border-slate-200 bg-white'}`}
                 >
+                  <span className={`text-[9px] font-black uppercase tracking-wider ${isSelected ? 'text-amber-500' : 'text-slate-500'}`}>{p.id}</span>
+
                   <span className={`text-[9px] font-black uppercase tracking-wider ${isSelected ? 'text-amber-500' : 'text-slate-500'}`}>{p.name}</span>
                   <span className="text-sm font-extrabold mt-0.5 tracking-tight">{p.adminDetails}</span>
                 </button>
@@ -361,7 +146,67 @@ const Wallet = () => {
             })}
           </div>
         </div>
-      )}
+      )} */}
+      {mode === 'deposit' && (
+  <div className="mb-6 animate-fadeIn">
+    <label className="text-[10px] font-bold text-slate-400 uppercase ml-1 mb-2.5 block tracking-widest">
+      አካውንት ይምረጡ (Select Provider)
+    </label>
+
+    <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      {providers.map((p) => {
+        const isSelected = selectedProvider?._id === p._id;
+
+        return (
+          <button
+            key={p._id}
+            onClick={() => setSelectedProvider(p)}
+            className={`shrink-0 min-w-[220px] rounded-2xl p-4 border transition-all duration-200 text-left
+              ${
+                isSelected
+                  ? 'border-amber-500 bg-amber-500/10 shadow-lg shadow-amber-500/10'
+                  : isDark
+                  ? 'border-slate-800 bg-slate-900/50 hover:border-slate-700'
+                  : 'border-slate-200 bg-white hover:border-slate-300'
+              }`}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span
+                className={`text-base font-extrabold tracking-tight ${
+                  isSelected ? 'text-amber-500' : ''
+                }`}
+              >
+                {p.name}
+              </span>
+
+              {isSelected && (
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">
+                Account Holder
+              </p>
+
+              <p className="font-semibold text-sm">
+                {p.id}
+              </p>
+
+              <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold pt-2">
+                Account Number
+              </p>
+
+              <p className="font-mono text-sm font-bold break-all">
+                {p.adminDetails}
+              </p>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+)}
 
       {/* 4. MAIN ACTION CONTROL FORM AREA */}
       <div className={`p-6 rounded-[2rem] shadow-2xl transition-all duration-300 ${isDark ? 'bg-slate-900/40 border border-slate-900' : 'bg-white'}`}>
