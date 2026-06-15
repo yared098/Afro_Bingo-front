@@ -5,14 +5,14 @@ import { useAuth } from '../context/AuthContext';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login, user, loading } = useAuth(); // Destructure 'user' and 'loading' from context
+  const { login, user, loading } = useAuth();
   const navigate = useNavigate();
   const tg = window.Telegram?.WebApp;
 
-  // 1. AUTO-REDIRECT LOGIC - Core function untouched
   useEffect(() => {
     if (user && !loading) {
       console.log("🚀 User authenticated, redirecting to Lobby...");
@@ -34,11 +34,9 @@ const Login = () => {
     }
   };
 
-  // 2. TELEGRAM SPLASH SCREEN - Afro Bingo Theme Updated
   if (tg?.initData && loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0f172a] text-white relative overflow-hidden">
-        {/* Subtle Background Pattern Elements */}
         <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] bg-amber-500/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] bg-emerald-500/10 rounded-full blur-[120px]" />
         
@@ -60,13 +58,10 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] px-4 relative overflow-hidden">
-      {/* Background radial accent flares */}
       <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-md w-full bg-slate-900/40 backdrop-blur-xl rounded-[2rem] shadow-2xl p-8 text-center border border-slate-800 relative">
-        
-        {/* Brand Header */}
         <div className="mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl shadow-xl shadow-amber-500/10 mb-4 transform hover:rotate-6 transition-transform duration-300">
             <span className="text-3xl">🎯</span>
@@ -77,30 +72,26 @@ const Login = () => {
           <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest mt-1">Admin Central Management</p>
         </div>
 
-        {/* Error Alert Display Box */}
         {error && (
           <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-2xl text-xs font-semibold tracking-wide text-left animate-shake">
             <span className="font-bold mr-1">⚠️ Error:</span> {error}
           </div>
         )}
 
-        {/* Form Controls Block */}
         <form onSubmit={handleSubmit} className="space-y-5 text-left">
           <div>
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">
               Email Address
             </label>
-            <div className="relative">
-              <input
-                type="email"
-                autoComplete="username"
-                placeholder="admin@afrobingo.com"
-                className="w-full px-5 py-4 rounded-2xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all font-medium text-sm shadow-inner"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
+            <input
+              type="email"
+              autoComplete="username"
+              placeholder="admin@afrobingo.com"
+              className="w-full px-5 py-4 rounded-2xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all font-medium text-sm shadow-inner"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
 
           <div>
@@ -109,18 +100,34 @@ const Login = () => {
             </label>
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 placeholder="••••••••"
-                className="w-full px-5 py-4 rounded-2xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all font-medium text-sm shadow-inner"
+                className="w-full px-5 py-4 pr-14 rounded-2xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all font-medium text-sm shadow-inner"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors"
+              >
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
+                    <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
 
-          {/* Core Submit Authorization Button */}
           <button 
             type="submit" 
             disabled={isSubmitting} 
