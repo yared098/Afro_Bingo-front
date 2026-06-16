@@ -47,7 +47,7 @@ const Login = () => {
         </div>
         
         <h2 className="text-2xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-emerald-400 animate-pulse">
-          Afro Bingo
+          Viva Bingo
         </h2>
         <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-3 px-4 py-1.5 bg-slate-800/80 border border-slate-700/50 rounded-full">
           Syncing with Telegram...
@@ -67,7 +67,7 @@ const Login = () => {
             <span className="text-3xl">🎯</span>
           </div>
           <h1 className="text-3xl font-black tracking-tight text-white uppercase">
-            Afro <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Bingo</span>
+            Viva <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Bingo</span>
           </h1>
           <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest mt-1">Admin Central Management</p>
         </div>

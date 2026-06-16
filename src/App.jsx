@@ -39,7 +39,7 @@ const PageLoader = () => (
 
     <div className="text-center space-y-2">
       <p className="text-[10px] font-black text-white uppercase tracking-[0.4em] animate-pulse">
-        Connecting to Afro Engine
+        Connecting to Viva Engine
       </p>
       <div className="flex gap-1 justify-center">
         <div className="w-1 h-1 bg-amber-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>

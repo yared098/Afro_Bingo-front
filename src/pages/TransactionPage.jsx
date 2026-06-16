@@ -50,7 +50,7 @@ const TransactionPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-2 py-4 sm:py-8 space-y-8">
-      {/* AFRO BINGO BRANDED HEADER */}
+      {/* Viva BINGO BRANDED HEADER */}
       <div className="flex flex-col gap-1 px-2">
         <div className="flex items-center gap-2">
             <ReceiptText className="text-amber-500" size={20} />

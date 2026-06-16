@@ -154,10 +154,10 @@ const BingoGame = () => {
         {/* Brand Logo */}
         <div className="flex flex-col select-none">
         <h1 className="text-2xl font-black italic tracking-tighter leading-none">
-            AFRO<span className="text-orange-500">BINGO</span>
+            Viva<span className="text-orange-500">BINGO</span>
         </h1>
         <span className="text-[7px] font-bold text-slate-500 tracking-[0.35em] mt-1">
-            HABESHA ENGINE V3
+            Viva ENGINE V3
         </span>
         </div>
 

@@ -49,7 +49,7 @@ const Leaderboard = () => {
         <h2 className={`text-3xl sm:text-6xl font-black tracking-tight uppercase ${isDark ? 'text-white' : 'text-slate-900'}`}>
           HALL OF <span className="text-amber-500">FAME</span>
         </h2>
-        <p className="text-slate-500 font-bold uppercase text-[8px] sm:text-[10px] tracking-[0.4em]">AFROBINGO'S TOP ELITE</p>
+        <p className="text-slate-500 font-bold uppercase text-[8px] sm:text-[10px] tracking-[0.4em]">VIVABINGO'S TOP ELITE</p>
       </motion.div>
 
       {/* 2. Podium Section (Adaptive Grid) */}

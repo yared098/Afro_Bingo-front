@@ -104,7 +104,7 @@ const Layout = ({ children }) => {
               </div>
               <div className="flex flex-col">
                 <h1 className={`font-black text-lg tracking-tight uppercase leading-none ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  AFRO<span className="text-amber-500">BINGO</span>
+                  Viva<span className="text-amber-500">BINGO</span>
                 </h1>
                 <span className="text-[7px] font-bold text-slate-500 tracking-[0.35em] mt-1">HABESHA ENGINE V3</span>
               </div>

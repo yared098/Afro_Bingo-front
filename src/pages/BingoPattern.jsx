@@ -37,7 +37,7 @@ const BingoPattern = () => {
       initial="hidden" animate="visible" variants={containerVariants}
       className="pb-20 max-w-7xl mx-auto px-1"
     >
-      {/* Luxury Afro Bingo Header */}
+      {/* Luxury Viva Bingo Header */}
       <motion.div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-amber-500/10 pb-6">
         <div>
           <h1 className={`text-3xl md:text-5xl font-black italic tracking-tighter uppercase ${isDark ? 'text-white' : 'text-slate-800'}`}>

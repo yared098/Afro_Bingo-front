@@ -49,7 +49,7 @@ const Settings = () => {
       isDark ? 'bg-slate-950 text-slate-100' : 'bg-amber-50/40 text-slate-900'
     }`}>
       
-      {/* Decorative Afro-Geometric Mesh Backgrounds */}
+      {/* Decorative Viva-Geometric Mesh Backgrounds */}
       <div className="absolute top-[-20%] left-[-10%] w-[300px] h-[300px] rounded-full blur-[120px] opacity-20 bg-gradient-to-tr from-amber-500 to-red-600 pointer-events-none" />
       <div className="absolute bottom-[10%] right-[-10%] w-[250px] h-[250px] rounded-full blur-[100px] opacity-20 bg-gradient-to-br from-yellow-400 to-emerald-600 pointer-events-none" />
 

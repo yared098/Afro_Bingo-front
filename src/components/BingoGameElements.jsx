@@ -191,7 +191,7 @@ export const LoadingSpinner = ({ isDark }) => (
       className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full mb-4" 
     />
     <p className={`font-black uppercase tracking-widest text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-      Syncing Afro Protocols...
+      Syncing Viva Protocols...
     </p>
   </div>
 );

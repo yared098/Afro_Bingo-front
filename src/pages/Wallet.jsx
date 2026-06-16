@@ -86,7 +86,7 @@ const Wallet = () => {
   return (
     <div className={`min-h-screen font-sans antialiased ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'} px-4 pb-24 pt-6`}>
       
-      {/* 1. AFRO BINGO PREMIUM BALANCE CARD */}
+      {/* 1. Viva BINGO PREMIUM BALANCE CARD */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
         className={`relative mb-6 p-6 rounded-[2rem] shadow-xl overflow-hidden ${isDark ? 'bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800' : 'bg-gradient-to-br from-amber-500 to-yellow-600 text-white'}`}
